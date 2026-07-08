@@ -1,225 +1,620 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>داشبورد فروشندگان</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--bg:#0f1729;--card:#1a2438;--card2:#222e47;--ink:#eef2fb;--mut:#93a1c0;--line:#2c3a57;
---blue:#3b82f6;--grn:#22c55e;--red:#ef4444;--amb:#f59e0b;--gold:#fbbf24}
-body{font-family:Vazirmatn,Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--ink);
-direction:rtl;font-size:15px;line-height:1.7;min-height:100vh}
-.wrap{max-width:680px;margin:0 auto;padding:14px 14px 60px}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>داشبورد فروشندگان</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    :root {
+      --bg: #0b1120;
+      --card: #162033;
+      --card2: #1f2a44;
+      --ink: #eef2fb;
+      --mut: #94a3b8;
+      --line: #2a3a5c;
+      --blue: #3b82f6;
+      --grn: #22c55e;
+      --red: #ef4444;
+      --amb: #f59e0b;
+      --gold: #fbbf24;
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .wrap {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 0 40px 0;
+    }
 
-/* ---------- صفحه ورود ---------- */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.4)}
-.login-box h1{font-size:20px;font-weight:800;text-align:center;margin-bottom:4px}
-.login-box .sub{color:var(--mut);font-size:13px;text-align:center;margin-bottom:22px}
-.login-box label{display:block;font-size:13px;color:var(--mut);margin:14px 0 6px}
-.login-box input{width:100%;background:#0b1120;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px;font-family:inherit;font-size:15px}
-.login-box button{width:100%;margin-top:20px;border:none;border-radius:12px;padding:13px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff}
-.login-err{color:#fca5a5;font-size:13px;margin-top:12px;text-align:center;display:none}
+    /* ---- ورود ---- */
+    .login-wrap {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 32px 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+    .login-box h1 {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .login-box .sub {
+      color: var(--mut);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .login-box label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mut);
+      margin: 16px 0 6px;
+    }
+    .login-box input {
+      width: 100%;
+      background: #0a101f;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .login-box input:focus {
+      border-color: var(--blue);
+    }
+    .login-box button {
+      width: 100%;
+      margin-top: 24px;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      transition: 0.2s;
+    }
+    .login-box button:hover {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+    .login-err {
+      color: #fca5a5;
+      font-size: 13px;
+      margin-top: 14px;
+      text-align: center;
+      display: none;
+    }
 
-/* ---------- هدر و KPI ---------- */
-.hd{background:linear-gradient(135deg,#1e3a8a,#3b0764);border-radius:18px;padding:18px;margin-bottom:13px;box-shadow:0 8px 30px rgba(0,0,0,.4);display:flex;justify-content:space-between;align-items:center}
-.hd h1{font-size:19px;font-weight:800}.hd .sub{color:#c7d2fe;font-size:12px;margin-top:6px}
-.logout{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:10px;padding:8px 12px;font-family:inherit;font-size:12px;cursor:pointer}
-.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-.kpi .l{color:var(--mut);font-size:12px}.kpi .v{font-size:18px;font-weight:800;margin-top:4px}
-.tgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:13px}
-.tg{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;text-align:center}
-.tg .n{font-size:19px;font-weight:800}.tg .c{font-size:11px;color:var(--mut);margin-top:2px}
+    /* ---- هدر & KPI ---- */
+    .hd {
+      background: linear-gradient(145deg, #1a2a4a, #0f1a30);
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hd h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .hd .sub {
+      color: #b9c7e6;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .logout {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .logout:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
 
-.search{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 14px;font-family:inherit;font-size:14px;margin-bottom:10px}
+    .kpis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 12px;
+    }
+    .kpi .l {
+      color: var(--mut);
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+    .kpi .v {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
 
-.rsec{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
-.rhd{display:flex;align-items:center;gap:10px;padding:12px 13px;cursor:pointer;user-select:none}
-.rinfo{flex:1}.rname{font-weight:800;font-size:15px}.rmeta{color:var(--mut);font-size:12px;margin-top:2px}
-.rar{color:var(--mut);font-size:15px;transition:.2s}.rar.op{transform:rotate(180deg)}
-.rbody{padding:0 11px 8px}.rbody.hide{display:none}
+    .tgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tg {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+    }
+    .tg .n {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .tg .c {
+      font-size: 11px;
+      color: var(--mut);
+      margin-top: 2px;
+    }
 
-.cust{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.cust .nm{font-weight:800;font-size:14.5px}.cust .rt{color:var(--mut);font-size:12px;margin-top:2px}
-.bal{font-size:13px;font-weight:800;white-space:nowrap;text-align:left}
-.bal.ok{color:var(--grn)}.bal.orange{color:var(--amb)}.bal.red{color:var(--red)}
-.age{font-size:11px;color:var(--mut);margin-top:3px}
-.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:5px}
-.status-dot.ok{background:var(--grn)}.status-dot.orange{background:var(--amb)}.status-dot.red{background:var(--red)}
+    .search {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .search:focus {
+      border-color: var(--blue);
+    }
 
-.empty{text-align:center;color:var(--mut);padding:40px 10px;font-size:14px}
-.loading{text-align:center;color:var(--mut);padding:40px 10px}
-</style>
+    .rsec {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .rhd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.1s;
+    }
+    .rhd:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .rinfo {
+      flex: 1;
+    }
+    .rname {
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .rmeta {
+      color: var(--mut);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .rar {
+      color: var(--mut);
+      font-size: 18px;
+      transition: 0.2s;
+    }
+    .rar.op {
+      transform: rotate(180deg);
+    }
+    .rbody {
+      padding: 0 12px 10px;
+    }
+    .rbody.hide {
+      display: none;
+    }
+
+    .cust {
+      background: var(--card2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .cust .nm {
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cust .rt {
+      color: var(--mut);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .bal {
+      font-size: 14px;
+      font-weight: 700;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .bal.ok {
+      color: var(--grn);
+    }
+    .bal.orange {
+      color: var(--amb);
+    }
+    .bal.red {
+      color: var(--red);
+    }
+    .age {
+      font-size: 11px;
+      color: var(--mut);
+      margin-top: 2px;
+      text-align: left;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.ok {
+      background: var(--grn);
+    }
+    .status-dot.orange {
+      background: var(--amb);
+    }
+    .status-dot.red {
+      background: var(--red);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--mut);
+      padding: 40px 10px;
+      font-size: 14px;
+    }
+    .loading {
+      text-align: center;
+      color: var(--mut);
+      padding: 40px 10px;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 30px;
+      padding: 2px 10px;
+      font-size: 11px;
+      color: var(--mut);
+    }
+  </style>
 </head>
 <body>
 
-<!-- ================= صفحه ورود ================= -->
-<div id="loginScreen" class="login-wrap">
-  <div class="login-box">
-    <h1>ورود فروشنده</h1>
-    <div class="sub">داشبورد مانده حساب مشتریان</div>
-    <label>نام کاربری</label>
-    <input id="loginUser" type="text" autocomplete="username">
-    <label>رمز عبور</label>
-    <input id="loginPass" type="password" autocomplete="current-password">
-    <button onclick="doLogin()">ورود</button>
-    <div id="loginErr" class="login-err"></div>
-  </div>
-</div>
-
-<!-- ================= داشبورد ================= -->
-<div id="dashScreen" class="wrap" style="display:none">
-  <div class="hd">
-    <div>
-      <h1 id="sellerNameEl">—</h1>
-      <div class="sub" id="todayEl"></div>
+  <!-- صفحه ورود -->
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-box">
+      <h1>ورود فروشنده</h1>
+      <div class="sub">داشبورد مانده حساب مشتریان</div>
+      <label>نام کاربری</label>
+      <input id="loginUser" type="text" autocomplete="username" placeholder="نام فروشنده">
+      <label>رمز عبور</label>
+      <input id="loginPass" type="password" autocomplete="current-password" placeholder="کد فروشنده">
+      <button onclick="doLogin()">ورود</button>
+      <div id="loginErr" class="login-err"></div>
     </div>
-    <button class="logout" onclick="doLogout()">خروج</button>
   </div>
 
-  <div class="tgrid">
-    <div class="tg"><div class="n" id="cntOk">0</div><div class="c">🟢 جاری</div></div>
-    <div class="tg"><div class="n" id="cntOrange">0</div><div class="c">🟠 سررسید</div></div>
-    <div class="tg"><div class="n" id="cntRed">0</div><div class="c">🔴 معوق</div></div>
+  <!-- داشبورد -->
+  <div id="dashScreen" class="wrap" style="display:none">
+    <div class="hd">
+      <div>
+        <h1 id="sellerNameEl">—</h1>
+        <div class="sub" id="todayEl"></div>
+      </div>
+      <button class="logout" onclick="doLogout()">خروج</button>
+    </div>
+
+    <div class="tgrid">
+      <div class="tg"><div class="n" id="cntOk">0</div><div class="c">🟢 جاری</div></div>
+      <div class="tg"><div class="n" id="cntOrange">0</div><div class="c">🟠 سررسید</div></div>
+      <div class="tg"><div class="n" id="cntRed">0</div><div class="c">🔴 معوق</div></div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="l">تعداد مشتری</div><div class="v" id="kpiCount">0</div></div>
+      <div class="kpi"><div class="l">جمع مانده بدهی</div><div class="v" id="kpiTotal">0</div></div>
+    </div>
+
+    <input class="search" id="searchBox" placeholder="جستجوی نام مشتری..." oninput="renderList()">
+
+    <div id="listWrap"><div class="loading">در حال بارگذاری...</div></div>
   </div>
-  <div class="kpis">
-    <div class="kpi"><div class="l">تعداد مشتری</div><div class="v" id="kpiCount">0</div></div>
-    <div class="kpi"><div class="l">جمع مانده بدهی</div><div class="v" id="kpiTotal">0</div></div>
-  </div>
 
-  <input class="search" id="searchBox" placeholder="جستجوی نام مشتری..." oninput="renderList()">
+  <script>
+    // ============================================================
+    //  تنظیمات: آدرس Web App گوگل اسکریپت رو اینجا قرار بدید
+    // ============================================================
+    var API_URL = "https://script.google.com/macros/s/AKfycbxturR7sj-Qg7OR2Oo8ls6Ppck1k5N7u43x2vTgBPWh6wAXXUxLugUiZRwq3w3LjULiMA/exec";
 
-  <div id="listWrap"><div class="loading">در حال بارگذاری...</div></div>
-</div>
+    // ============================================================
+    //  STATE
+    // ============================================================
+    var STATE = {
+      raw: null,           // پاسخ کامل از سرور
+      customers: [],       // لیست مشتریان (با مانده و تاریخچه)
+      invoiceMap: {},      // کد مشتری -> اطلاعات فاکتور { status, max_age, total_bal }
+      sellerName: ''
+    };
 
-<script>
-/* =========== تنظیمات: آدرس Web App گوگل اسکریپت رو اینجا بذارید =========== */
-var API_URL = "https://script.google.com/macros/s/AKfycbxturR7sj-Qg7OR2Oo8ls6Ppck1k5N7u43x2vTgBPWh6wAXXUxLugUiZRwq3w3LjULiMA/exec";
+    // ============================================================
+    //  توابع کمکی
+    // ============================================================
+    function faNum(n) {
+      if (n === undefined || n === null) return '۰';
+      return Number(n).toLocaleString('fa-IR');
+    }
 
-var STATE = { customers: [], sellerName: '', isAdmin: false };
+    function toast(msg) {
+      var el = document.getElementById('loginErr');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
 
-function faNum(n) {
-  return Number(n).toLocaleString('fa-IR');
-}
+    function clearToast() {
+      document.getElementById('loginErr').style.display = 'none';
+    }
 
-function toast(msg) {
-  var el = document.getElementById('loginErr');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
+    // ============================================================
+    //  ورود / خروج
+    // ============================================================
+    function doLogin() {
+      var u = document.getElementById('loginUser').value.trim();
+      var p = document.getElementById('loginPass').value.trim();
+      if (!u || !p) { toast('نام کاربری و رمز عبور را وارد کنید'); return; }
+      clearToast();
 
-function doLogin() {
-  var u = document.getElementById('loginUser').value.trim();
-  var p = document.getElementById('loginPass').value.trim();
-  if (!u || !p) { toast('نام کاربری و رمز عبور را وارد کنید'); return; }
-  document.getElementById('loginErr').style.display = 'none';
+      // برای سازگاری با بک‌اند جدید: پارامتر seller = نام فروشنده، پسورد در این نسخه صرفاً برای لاگین ساده است
+      // (در نسخه قبلی از action=login استفاده می‌شد، اما بک‌اند جدید از ?seller= استفاده می‌کند)
+      // ما مستقیماً با seller درخواست می‌دهیم و در صورت خطا، پیام مناسب نشان می‌دهیم.
+      fetch(API_URL + '?seller=' + encodeURIComponent(u))
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          if (res.error) {
+            toast(res.error || 'فروشنده یافت نشد');
+            return;
+          }
+          // ذخیره اطلاعات در session
+          sessionStorage.setItem('seller', u);
+          sessionStorage.setItem('pass', p); // فقط برای حفظ ظاهر
+          STATE.raw = res;
+          showDashboard();
+        })
+        .catch(function() {
+          toast('اتصال به سرور برقرار نشد. آدرس API را بررسی کنید.');
+        });
+    }
 
-  fetch(API_URL + '?action=login&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
-    .then(function(r){ return r.json(); })
-    .then(function(res) {
-      if (!res.ok) { toast(res.error || 'خطا در ورود'); return; }
-      sessionStorage.setItem('u', u);
-      sessionStorage.setItem('p', p);
-      showDashboard();
-    })
-    .catch(function(){ toast('اتصال به سرور برقرار نشد. آدرس API را بررسی کنید.'); });
-}
+    function doLogout() {
+      sessionStorage.removeItem('seller');
+      sessionStorage.removeItem('pass');
+      document.getElementById('dashScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
+      STATE.raw = null;
+    }
 
-function doLogout() {
-  sessionStorage.removeItem('u');
-  sessionStorage.removeItem('p');
-  document.getElementById('dashScreen').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-}
+    // ============================================================
+    //  نمایش داشبورد
+    // ============================================================
+    function showDashboard() {
+      var u = sessionStorage.getItem('seller');
+      if (!u) return;
 
-function showDashboard() {
-  var u = sessionStorage.getItem('u'), p = sessionStorage.getItem('p');
-  if (!u || !p) return;
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('dashScreen').style.display = 'block';
-  document.getElementById('listWrap').innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashScreen').style.display = 'block';
+      document.getElementById('listWrap').innerHTML = '<div class="loading">در حال بارگذاری...</div>';
 
-  fetch(API_URL + '?action=dashboard&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
-    .then(function(r){ return r.json(); })
-    .then(function(res) {
-      if (!res.ok) { doLogout(); toast(res.error || 'خطا'); return; }
-      STATE.customers = res.customers;
-      STATE.sellerName = res.sellerName;
-      STATE.isAdmin = res.isAdmin;
-      document.getElementById('sellerNameEl').textContent = res.sellerName;
+      // اگر STATE.raw از قبل وجود دارد (همان درخواست لاگین) از آن استفاده کن
+      // در غیر این صورت دوباره درخواست بده (مثلاً بعد از رفرش)
+      if (STATE.raw && STATE.raw.seller === u) {
+        applyData(STATE.raw);
+      } else {
+        fetch(API_URL + '?seller=' + encodeURIComponent(u))
+          .then(function(r) { return r.json(); })
+          .then(function(res) {
+            if (res.error) { doLogout();
+              toast(res.error); return; }
+            STATE.raw = res;
+            applyData(res);
+          })
+          .catch(function() {
+            document.getElementById('listWrap').innerHTML = '<div class="empty">اتصال برقرار نشد</div>';
+          });
+      }
+    }
+
+    function applyData(data) {
+      STATE.sellerName = data.seller || '';
+      STATE.customers = data.customers || [];
+      STATE.invoiceMap = data.invoices || {};
+
+      document.getElementById('sellerNameEl').textContent = STATE.sellerName;
       document.getElementById('todayEl').textContent = new Date().toLocaleDateString('fa-IR');
+
       renderList();
-    })
-    .catch(function(){ document.getElementById('listWrap').innerHTML = '<div class="empty">اتصال برقرار نشد</div>'; });
-}
+    }
 
-function statusLabel(s) {
-  return s === 'red' ? '🔴 معوق' : (s === 'orange' ? '🟠 سررسید شده' : '🟢 جاری');
-}
+    // ============================================================
+    //  رندر لیست مشتریان + آمار
+    // ============================================================
+    function renderList() {
+      var q = document.getElementById('searchBox').value.trim().toLowerCase();
+      var list = STATE.customers.filter(function(c) {
+        var name = (c.name || '').toLowerCase();
+        return !q || name.indexOf(q) !== -1;
+      });
 
-function renderList() {
-  var q = document.getElementById('searchBox').value.trim();
-  var list = STATE.customers.filter(function(c) {
-    return !q || String(c.customerName).indexOf(q) !== -1;
-  });
+      // ---- آمار کلی (همه مشتریان) ----
+      var cOk = 0,
+        cOrange = 0,
+        cRed = 0,
+        totalBal = 0;
 
-  // شمارش وضعیت‌ها و جمع مانده (روی کل مشتری‌ها، نه فقط نتیجه جستجو)
-  var cOk=0, cOrange=0, cRed=0, total=0;
-  STATE.customers.forEach(function(c) {
-    total += Number(c.balance) || 0;
-    if (c.status === 'red') cRed++; else if (c.status === 'orange') cOrange++; else cOk++;
-  });
-  document.getElementById('cntOk').textContent = faNum(cOk);
-  document.getElementById('cntOrange').textContent = faNum(cOrange);
-  document.getElementById('cntRed').textContent = faNum(cRed);
-  document.getElementById('kpiCount').textContent = faNum(STATE.customers.length);
-  document.getElementById('kpiTotal').textContent = faNum(total);
+      STATE.customers.forEach(function(c) {
+        var code = String(c.code);
+        var inv = STATE.invoiceMap[code];
+        var bal = Number(c.bal) || 0;
+        totalBal += bal;
 
-  // گروه‌بندی بر اساس مسیر (و در حالت ادمین، نام فروشنده هم نشون داده میشه)
-  var groups = {};
-  list.forEach(function(c) {
-    var key = c.routeCode + '|' + c.routeName;
-    if (!groups[key]) groups[key] = { routeName: c.routeName, sellerName: c.sellerName, items: [] };
-    groups[key].items.push(c);
-  });
+        if (inv && inv.status) {
+          if (inv.status === 'ok') cOk++;
+          else if (inv.status === 'orange') cOrange++;
+          else if (inv.status === 'red') cRed++;
+        } else {
+          // اگر فاکتوری نداشته باشد، وضعیت سبز در نظر بگیریم (یا بدون وضعیت)
+          // اما طبق منطق قبلی، اگر فاکتور نداشته باشد وضعیت ندارد، ولی برای آمار می‌توانیم سبز فرض کنیم
+          // یا آن را نادیده بگیریم. برای سازگاری با نمایش، آن را سبز حساب می‌کنیم.
+          cOk++;
+        }
+      });
 
-  var keys = Object.keys(groups);
-  if (keys.length === 0) {
-    document.getElementById('listWrap').innerHTML = '<div class="empty">مشتری‌ای یافت نشد</div>';
-    return;
-  }
+      document.getElementById('cntOk').textContent = faNum(cOk);
+      document.getElementById('cntOrange').textContent = faNum(cOrange);
+      document.getElementById('cntRed').textContent = faNum(cRed);
+      document.getElementById('kpiCount').textContent = faNum(STATE.customers.length);
+      document.getElementById('kpiTotal').textContent = faNum(totalBal);
 
-  var html = '';
-  keys.forEach(function(key, gi) {
-    var g = groups[key];
-    var groupTotal = g.items.reduce(function(s,c){ return s + (Number(c.balance)||0); }, 0);
-    var label = g.routeName + (STATE.isAdmin && g.sellerName ? ' · ' + g.sellerName : '');
-    html += '<div class="rsec">';
-    html += '<div class="rhd" onclick="this.nextElementSibling.classList.toggle(\'hide\');this.querySelector(\'.rar\').classList.toggle(\'op\')">';
-    html += '<div class="rinfo"><div class="rname">' + label + '</div><div class="rmeta">' + faNum(g.items.length) + ' مشتری · مانده ' + faNum(groupTotal) + '</div></div>';
-    html += '<div class="rar">&#9662;</div></div>';
-    html += '<div class="rbody' + (gi === 0 ? '' : ' hide') + '">';
-    g.items.sort(function(a,b){ return (b.maxAge||0) - (a.maxAge||0); });
-    g.items.forEach(function(c) {
-      html += '<div class="cust">';
-      html += '<div><div class="nm"><span class="status-dot ' + c.status + '"></span>' + c.customerName + '</div>';
-      html += '<div class="rt">کد ' + c.customerCode + '</div></div>';
-      html += '<div><div class="bal ' + c.status + '">' + faNum(c.balance) + '</div>';
-      html += '<div class="age">' + statusLabel(c.status) + (c.maxAge != null ? ' · ' + faNum(c.maxAge) + ' روز' : '') + '</div></div>';
-      html += '</div>';
-    });
-    html += '</div></div>';
-  });
+      // ---- گروه‌بندی بر اساس مسیر (route) ----
+      var groups = {};
+      list.forEach(function(c) {
+        var route = c.route || 'بدون مسیر';
+        if (!groups[route]) groups[route] = { routeName: route, items: [] };
+        groups[route].items.push(c);
+      });
 
-  document.getElementById('listWrap').innerHTML = html;
-}
+      var keys = Object.keys(groups);
+      if (keys.length === 0) {
+        document.getElementById('listWrap').innerHTML = '<div class="empty">مشتری‌ای یافت نشد</div>';
+        return;
+      }
 
-/* اگر قبلاً لاگین شده، مستقیم بره به داشبورد */
-(function init(){
-  if (sessionStorage.getItem('u') && sessionStorage.getItem('p')) showDashboard();
-})();
-</script>
+      var html = '';
+      keys.forEach(function(key, gi) {
+        var g = groups[key];
+        var groupTotal = g.items.reduce(function(s, c) { return s + (Number(c.bal) || 0); }, 0);
+        html += '<div class="rsec">';
+        html +=
+          '<div class="rhd" onclick="this.nextElementSibling.classList.toggle(\'hide\');this.querySelector(\'.rar\').classList.toggle(\'op\')">';
+        html += '<div class="rinfo"><div class="rname">' + key + '</div><div class="rmeta">' + faNum(g.items.length) +
+          ' مشتری · مانده ' + faNum(groupTotal) + '</div></div>';
+        html += '<div class="rar">&#9662;</div></div>';
+        html += '<div class="rbody' + (gi === 0 ? '' : ' hide') + '">';
+
+        // مرتب‌سازی بر اساس بیشترین مانده (اختیاری)
+        g.items.sort(function(a, b) { return (Number(b.bal) || 0) - (Number(a.bal) || 0); });
+
+        g.items.forEach(function(c) {
+          var code = String(c.code);
+          var inv = STATE.invoiceMap[code] || {};
+          var status = inv.status || 'ok';
+          var maxAge = inv.max_age || 0;
+          var bal = Number(c.bal) || 0;
+
+          var statusLabel = status === 'red' ? '🔴 معوق' : (status === 'orange' ? '🟠 سررسید' : '🟢 جاری');
+
+          html += '<div class="cust">';
+          html += '<div><div class="nm"><span class="status-dot ' + status + '"></span>' + (c.name || '') +
+            '</div>';
+          html += '<div class="rt">کد ' + c.code + '</div></div>';
+          html += '<div><div class="bal ' + status + '">' + faNum(bal) + '</div>';
+          html += '<div class="age">' + statusLabel + (maxAge > 0 ? ' · ' + faNum(maxAge) + ' روز' : '') +
+          '</div></div>';
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+      });
+
+      document.getElementById('listWrap').innerHTML = html;
+    }
+
+    // ============================================================
+    //  مقداردهی اولیه: اگر قبلاً لاگین کرده، مستقیم برو به داشبورد
+    // ============================================================
+    (function init() {
+      if (sessionStorage.getItem('seller')) {
+        // برای اطمینان دوباره درخواست می‌دهیم (STATE.raw خالی است)
+        var u = sessionStorage.getItem('seller');
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashScreen').style.display = 'block';
+        document.getElementById('listWrap').innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+
+        fetch(API_URL + '?seller=' + encodeURIComponent(u))
+          .then(function(r) { return r.json(); })
+          .then(function(res) {
+            if (res.error) { doLogout();
+              toast(res.error); return; }
+            STATE.raw = res;
+            applyData(res);
+          })
+          .catch(function() {
+            document.getElementById('listWrap').innerHTML = '<div class="empty">اتصال برقرار نشد</div>';
+          });
+      }
+    })();
+  </script>
 </body>
 </html>
