@@ -349,10 +349,10 @@
     <div class="login-box">
       <h1>ورود فروشنده</h1>
       <div class="sub">داشبورد مانده حساب مشتریان</div>
-      <label>نام فروشنده</label>
-      <input id="loginUser" type="text" autocomplete="username" placeholder="مثلا: مهدي سعيدي">
-      <label>رمز عبور (کد فروشنده)</label>
-      <input id="loginPass" type="password" autocomplete="current-password" placeholder="مثلا: 1">
+      <label>نام کاربری</label>
+      <input id="loginUser" type="text" autocomplete="username" placeholder="نام فروشنده">
+      <label>رمز عبور</label>
+      <input id="loginPass" type="password" autocomplete="current-password" placeholder="کد فروشنده">
       <button onclick="doLogin()">ورود</button>
       <div id="loginErr" class="login-err"></div>
     </div>
@@ -419,50 +419,21 @@
     }
 
     // ============================================================
-    //  اعتبارسنجی ساده در سمت کلاینت (بر اساس لیست فروشندگان)
-    // ============================================================
-    var SELLER_LIST = [
-      'مهدي سعيدي',
-      'جواد رئيسي',
-      'عسگر پوراحتشامي',
-      'علي اکبر سدني',
-      'سيد رضي موسوي',
-      'مرتضي عرب احمدي',
-      'مصطفي جلالي',
-      'خانم سدني'
-    ];
-
-    function validateSeller(name) {
-      var normalized = name.replace(/\s+/g, '').replace(/ي/g, 'ی').replace(/ك/g, 'ک');
-      for (var i = 0; i < SELLER_LIST.length; i++) {
-        var s = SELLER_LIST[i].replace(/\s+/g, '').replace(/ي/g, 'ی').replace(/ك/g, 'ک');
-        if (s === normalized) return true;
-      }
-      return false;
-    }
-
-    // ============================================================
     //  ورود / خروج
     // ============================================================
     function doLogin() {
       var u = document.getElementById('loginUser').value.trim();
       var p = document.getElementById('loginPass').value.trim();
-      if (!u || !p) { toast('نام فروشنده و کد را وارد کنید'); return; }
-
-      // اعتبارسنجی ساده نام فروشنده
-      if (!validateSeller(u)) {
-        toast('نام فروشنده معتبر نیست. از لیست فروشندگان استفاده کنید.');
-        return;
-      }
-
+      if (!u || !p) { toast('نام کاربری و رمز عبور را وارد کنید'); return; }
       clearToast();
 
-      // ارسال درخواست به سرور با پارامتر seller
-      fetch(API_URL + '?seller=' + encodeURIComponent(u))
+      // ارسال درخواست به سرور با پارامترهای username و password
+      // اینجا از action=login استفاده می‌کنیم تا سرور اعتبارسنجی کند
+      fetch(API_URL + '?action=login&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
         .then(function(r) { return r.json(); })
         .then(function(res) {
-          if (res.error) {
-            toast(res.error || 'خطا در دریافت اطلاعات');
+          if (!res.ok) {
+            toast(res.error || 'نام کاربری یا رمز عبور اشتباه است');
             return;
           }
           // ذخیره در session
@@ -490,7 +461,8 @@
     // ============================================================
     function showDashboard() {
       var u = sessionStorage.getItem('seller');
-      if (!u) return;
+      var p = sessionStorage.getItem('pass');
+      if (!u || !p) return;
 
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('dashScreen').style.display = 'block';
@@ -500,11 +472,12 @@
       if (STATE.raw && STATE.raw.seller === u) {
         applyData(STATE.raw);
       } else {
-        fetch(API_URL + '?seller=' + encodeURIComponent(u))
+        // درخواست اطلاعات داشبورد با username و password
+        fetch(API_URL + '?action=dashboard&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
           .then(function(r) { return r.json(); })
           .then(function(res) {
-            if (res.error) { doLogout();
-              toast(res.error); return; }
+            if (!res.ok) { doLogout();
+              toast(res.error || 'خطا در دریافت اطلاعات'); return; }
             STATE.raw = res;
             applyData(res);
           })
@@ -515,7 +488,7 @@
     }
 
     function applyData(data) {
-      STATE.sellerName = data.seller || '';
+      STATE.sellerName = data.sellerName || '';
       STATE.customers = data.customers || [];
       STATE.invoiceMap = data.invoices || {};
 
@@ -623,17 +596,18 @@
     //  مقداردهی اولیه: اگر قبلاً لاگین کرده، مستقیم برو به داشبورد
     // ============================================================
     (function init() {
-      if (sessionStorage.getItem('seller')) {
+      if (sessionStorage.getItem('seller') && sessionStorage.getItem('pass')) {
         var u = sessionStorage.getItem('seller');
+        var p = sessionStorage.getItem('pass');
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashScreen').style.display = 'block';
         document.getElementById('listWrap').innerHTML = '<div class="loading">در حال بارگذاری...</div>';
 
-        fetch(API_URL + '?seller=' + encodeURIComponent(u))
+        fetch(API_URL + '?action=dashboard&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
           .then(function(r) { return r.json(); })
           .then(function(res) {
-            if (res.error) { doLogout();
-              toast(res.error); return; }
+            if (!res.ok) { doLogout();
+              toast(res.error || 'خطا در دریافت اطلاعات'); return; }
             STATE.raw = res;
             applyData(res);
           })
