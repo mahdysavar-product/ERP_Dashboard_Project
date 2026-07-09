@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>داشبورد فروشندگان</title>
+<title>داشبورد فروشندگان - ساورعلیا</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0f1729;--card:#1a2438;--card2:#222e47;--ink:#eef2fb;--mut:#93a1c0;--line:#2c3a57;
@@ -20,6 +20,7 @@ direction:rtl;font-size:15px;line-height:1.7;min-height:100vh}
 .login-box label{display:block;font-size:13px;color:var(--mut);margin:14px 0 6px}
 .login-box input{width:100%;background:#0b1120;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px;font-family:inherit;font-size:15px}
 .login-box button{width:100%;margin-top:20px;border:none;border-radius:12px;padding:13px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff}
+.login-box button:disabled{opacity:.6;cursor:default}
 .login-err{color:#fca5a5;font-size:13px;margin-top:12px;text-align:center;display:none}
 
 /* ---------- هدر و KPI ---------- */
@@ -59,12 +60,12 @@ direction:rtl;font-size:15px;line-height:1.7;min-height:100vh}
 <div id="loginScreen" class="login-wrap">
   <div class="login-box">
     <h1>ورود فروشنده</h1>
-    <div class="sub">داشبورد مانده حساب مشتریان</div>
+    <div class="sub">داشبورد مانده حساب مشتریان - ساورعلیا</div>
     <label>نام کاربری</label>
-    <input id="loginUser" type="text" autocomplete="username">
+    <input id="loginUser" type="text" inputmode="numeric" autocomplete="username">
     <label>رمز عبور</label>
-    <input id="loginPass" type="password" autocomplete="current-password">
-    <button onclick="doLogin()">ورود</button>
+    <input id="loginPass" type="password" inputmode="numeric" autocomplete="current-password">
+    <button id="loginBtn" onclick="doLogin()">ورود</button>
     <div id="loginErr" class="login-err"></div>
   </div>
 </div>
@@ -89,18 +90,19 @@ direction:rtl;font-size:15px;line-height:1.7;min-height:100vh}
     <div class="kpi"><div class="l">جمع مانده بدهی</div><div class="v" id="kpiTotal">0</div></div>
   </div>
 
-  <input class="search" id="searchBox" placeholder="جستجوی نام مشتری..." oninput="renderList()">
+  <input class="search" id="searchBox" placeholder="جستجوی نام یا کد مشتری..." oninput="renderList()">
 
   <div id="listWrap"><div class="loading">در حال بارگذاری...</div></div>
 </div>
 
 <script>
-/* =========== تنظیمات: آدرس Web App گوگل اسکریپت رو اینجا بذارید =========== */
-var API_URL = "https://script.google.com/macros/s/AKfycbxturR7sj-Qg7OR2Oo8ls6Ppck1k5N7u43x2vTgBPWh6wAXXUxLugUiZRwq3w3LjULiMA/exec";
+/* =========== آدرس Web App گوگل اسکریپت (نسخه Code_v2.gs) - بعد از Deploy جدید اینجا جایگزین کن =========== */
+var API_URL = "https://script.google.com/macros/s/AKfycbyYf66icGptvrJtCR4CtW6K1AxB7Q04k3e8Rji7C2PBjt-HGwOaMCn9Avwrck6jnCSP/exec";
 
 var STATE = { customers: [], sellerName: '', isAdmin: false };
 
 function faNum(n) {
+  if (n === null || n === undefined) return '—';
   return Number(n).toLocaleString('fa-IR');
 }
 
@@ -110,21 +112,29 @@ function toast(msg) {
   el.style.display = 'block';
 }
 
+function setLoginBusy(busy) {
+  var btn = document.getElementById('loginBtn');
+  btn.disabled = busy;
+  btn.textContent = busy ? 'در حال بررسی...' : 'ورود';
+}
+
 function doLogin() {
   var u = document.getElementById('loginUser').value.trim();
   var p = document.getElementById('loginPass').value.trim();
   if (!u || !p) { toast('نام کاربری و رمز عبور را وارد کنید'); return; }
   document.getElementById('loginErr').style.display = 'none';
+  setLoginBusy(true);
 
   fetch(API_URL + '?action=login&username=' + encodeURIComponent(u) + '&password=' + encodeURIComponent(p))
     .then(function(r){ return r.json(); })
     .then(function(res) {
+      setLoginBusy(false);
       if (!res.ok) { toast(res.error || 'خطا در ورود'); return; }
       sessionStorage.setItem('u', u);
       sessionStorage.setItem('p', p);
       showDashboard();
     })
-    .catch(function(){ toast('اتصال به سرور برقرار نشد. آدرس API را بررسی کنید.'); });
+    .catch(function(){ setLoginBusy(false); toast('اتصال به سرور برقرار نشد. آدرس API را بررسی کنید.'); });
 }
 
 function doLogout() {
@@ -136,7 +146,7 @@ function doLogout() {
 
 function showDashboard() {
   var u = sessionStorage.getItem('u'), p = sessionStorage.getItem('p');
-  if (!u || !p) return;
+  if (!u || !p) { doLogout(); return; }
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashScreen').style.display = 'block';
   document.getElementById('listWrap').innerHTML = '<div class="loading">در حال بارگذاری...</div>';
@@ -145,10 +155,10 @@ function showDashboard() {
     .then(function(r){ return r.json(); })
     .then(function(res) {
       if (!res.ok) { doLogout(); toast(res.error || 'خطا'); return; }
-      STATE.customers = res.customers;
+      STATE.customers = res.customers || [];
       STATE.sellerName = res.sellerName;
       STATE.isAdmin = res.isAdmin;
-      document.getElementById('sellerNameEl').textContent = res.sellerName;
+      document.getElementById('sellerNameEl').textContent = res.sellerName + (res.isAdmin ? ' (مدیر)' : '');
       document.getElementById('todayEl').textContent = new Date().toLocaleDateString('fa-IR');
       renderList();
     })
@@ -162,10 +172,11 @@ function statusLabel(s) {
 function renderList() {
   var q = document.getElementById('searchBox').value.trim();
   var list = STATE.customers.filter(function(c) {
-    return !q || String(c.customerName).indexOf(q) !== -1;
+    if (!q) return true;
+    return String(c.customerName).indexOf(q) !== -1 || String(c.customerCode).indexOf(q) !== -1;
   });
 
-  // شمارش وضعیت‌ها و جمع مانده (روی کل مشتری‌ها، نه فقط نتیجه جستجو)
+  // شمارش وضعیت‌ها و جمع مانده روی کل مشتری‌ها (نه فقط نتیجه جستجو)
   var cOk=0, cOrange=0, cRed=0, total=0;
   STATE.customers.forEach(function(c) {
     total += Number(c.balance) || 0;
@@ -177,7 +188,7 @@ function renderList() {
   document.getElementById('kpiCount').textContent = faNum(STATE.customers.length);
   document.getElementById('kpiTotal').textContent = faNum(total);
 
-  // گروه‌بندی بر اساس مسیر (و در حالت ادمین، نام فروشنده هم نشون داده میشه)
+  // گروه‌بندی بر اساس مسیر (در حالت ادمین، نام فروشنده هم کنار مسیر نشون داده میشه)
   var groups = {};
   list.forEach(function(c) {
     var key = c.routeCode + '|' + c.routeName;
@@ -191,11 +202,18 @@ function renderList() {
     return;
   }
 
+  // مرتب‌سازی گروه‌ها بر اساس بیشترین مانده
+  keys.sort(function(a,b){
+    var ta = groups[a].items.reduce(function(s,c){return s+(Number(c.balance)||0);},0);
+    var tb = groups[b].items.reduce(function(s,c){return s+(Number(c.balance)||0);},0);
+    return tb - ta;
+  });
+
   var html = '';
   keys.forEach(function(key, gi) {
     var g = groups[key];
     var groupTotal = g.items.reduce(function(s,c){ return s + (Number(c.balance)||0); }, 0);
-    var label = g.routeName + (STATE.isAdmin && g.sellerName ? ' · ' + g.sellerName : '');
+    var label = (g.routeName || 'بدون مسیر') + (STATE.isAdmin && g.sellerName ? ' · ' + g.sellerName : '');
     html += '<div class="rsec">';
     html += '<div class="rhd" onclick="this.nextElementSibling.classList.toggle(\'hide\');this.querySelector(\'.rar\').classList.toggle(\'op\')">';
     html += '<div class="rinfo"><div class="rname">' + label + '</div><div class="rmeta">' + faNum(g.items.length) + ' مشتری · مانده ' + faNum(groupTotal) + '</div></div>';
